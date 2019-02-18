@@ -8,7 +8,7 @@
 NODE_COUNT=3
 
 #Количество акаунтов на каждой ноде
-ACCOUNTS_COUNT=2;
+ACCOUNTS_COUNT=1
 
 #время формирования одного блока
 BLOCK_TIME=3
@@ -28,7 +28,10 @@ do
 		-n)
 			NODE_COUNT=$2
 			shift ;;
-		*) echo -e " keys:\n -p  --> port number\n -bt --> block time\n -n  --> nodes count"
+		-a)
+			ACCOUNTS_COUNT=$2
+			shift ;;
+		*) echo -e " keys:\n -p  --> port number\n -bt --> block time\n -n  --> nodes count\n -a --> accounts count on each node"
 			exit
 	esac
 	shift
@@ -82,8 +85,6 @@ find -O0 ${WORK_DIR} -name "node-*"  |  xargs rm -r > /dev/null 2>&1
 touch ${WORK_DIR}/password_file
 
 
-#Количество акаунтов на узле
-ACCOUNTS_COUNT=2;
 for (( i=0; i < $NODE_COUNT; i++ ))
 do
     for((z = 0; z < ${ACCOUNTS_COUNT}; z++))

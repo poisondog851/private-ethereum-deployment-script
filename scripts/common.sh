@@ -6,7 +6,7 @@ ip_address() {
     if [[ $(echo ${IP_ADDRESS} | wc -w) > 1 ]]
     then
         echo "Более одного подходящего IP адреса: ${IP_ADDRESS}"
-        IP_ADDRESS=$(echo ${IP_ADDRESS} | awk '{print $`}')
+        IP_ADDRESS=$(echo ${IP_ADDRESS} | awk '{print $1}')
         echo "Использую адрес ${IP_ADDRESS}"
     fi
     echo ${IP_ADDRESS}
