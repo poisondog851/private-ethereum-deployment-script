@@ -47,7 +47,7 @@ echo PORT ${PORT}
 for (( i = 0; i < ${NODE_COUNT}; i++ ))
 do
     line=$((${i} * (${ACCOUNTS_COUNT} + 1) + 1))
-    coinbase=$(sed -n "${line}p" ${WORK_DIR}/addresses)
+    coinbase=$(sed -n "s/0x//;${line}p" ${WORK_DIR}/addresses)
 	${GETH_DIR}/geth --datadir ${WORK_DIR}/node-${i} --mine --rpccorsdomain "*" --rpcapi eth,net,web3,personal --ethstats node-${i}:secret@${IP_ADDRESS}:3000 --rpcport ${RPC_PORT} --port ${PORT} --password ${WORK_DIR}/password_file --rpc --nodiscover --unlock 0x${coinbase} &
 	sleep 3
 	${GETH_DIR}/geth --exec "loadScript('${WORK_DIR}/scripts/cmd.js')" attach ${WORK_DIR}/node-${i}/geth.ipc

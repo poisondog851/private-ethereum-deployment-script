@@ -90,7 +90,7 @@ do
     for((z = 0; z < ${ACCOUNTS_COUNT}; z++))
     do
         address=$(${GETH_DIR}/geth account new --datadir ${WORK_DIR}/node-${i} --password ${WORK_DIR}/password_file)
-        echo ${address} | awk '{print $2}' | tr -d '{}'| tee -a ${ADDRESSES}
+        echo ${address} | awk -v p="0x" '{print p $2}' | tr -d '{}'| tee -a ${ADDRESSES}
 	done
 	echo >> ${ADDRESSES}
 done
@@ -122,7 +122,7 @@ EXTRA_DATA=0x0000000000000000000000000000000000000000000000000000000000000000
 for (( i = 0; i < ${NODE_COUNT}; i++ ))
 do
     line=$((${i} * (${ACCOUNTS_COUNT} + 1) + 1))
-    coinbase=$(sed -n "${line}p" ${ADDRESSES})
+    coinbase=$(sed -n "s/0x//;${line}p" ${ADDRESSES})
 	EXTRA_DATA+=${coinbase}
 done
 EXTRA_DATA+=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -139,7 +139,7 @@ echo -e "
 for (( i = 0; i < ${NODE_COUNT}; i++ ))
 do
     line=$((${i} * (${ACCOUNTS_COUNT} + 1) + 1))
-    coinbase=$(sed -n "${line}p" ${ADDRESSES})
+    coinbase=$(sed -n "s/0x//;${line}p" ${ADDRESSES})
     echo -e "\t\"${coinbase}\": {
           \t\"balance\": \"0x200000000000000000000000000000000000000000000000000000000000000\"
         },"
